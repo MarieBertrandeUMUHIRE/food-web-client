@@ -1,7 +1,9 @@
-json.id @food.id
 
-json.ingredient @food.ingredient
+<h1>Food Recipe</h1>
+<h2>Ingredient:  <%= @food.ingredient %></h2>
+<h2>Spice:  <%= @food.spice %></h2>
+<h2>Measurement:  <%= @food.measurement %></h2>
 
-json.spice @food.spice
+<%= link_to "Delete Recipe", "/foods/#{@food.id}", method: :delete %>
 
-json.measurement @food.measurement
+

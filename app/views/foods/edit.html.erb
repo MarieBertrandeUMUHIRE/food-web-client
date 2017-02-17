@@ -1,0 +1,14 @@
+<%= form_tag "/foods/#{@food['id']}", method: :patch do %>
+ 
+   <%= label_tag :ingredient %>
+   <%= text_field_tag :ingredient, @food['ingredient'] %>
+ 
+   <%= label_tag :spice %>
+   <%= text_field_tag :spice, @food['spice'] %>
+ 
+   <%= label_tag :measurement %>
+   <%= text_field_tag :measurement, @food['measurement'] %>
+ 
+   <%= submit_tag "Update Recipe" %>
+ <% end %> 
+
