@@ -1,11 +1,11 @@
 class FoodsController < ApplicationController
   def index
-    @foods = Unirest.get("http://localhost:3000/api/v2/foods.json").body
-  end
+    @foods = Food.all
+    end
+
 
   def show
-    food_hash = Unirest.get("http://localhost:3000/api/v2/foods/#{params[:id]}.json").body
-    @food = Food.new(food_hash)
+  @food = Food.find(params[:id])
 
   end
 
@@ -13,8 +13,8 @@ class FoodsController < ApplicationController
   end
 
   def create
-   @food = Unirest.post("http://localhost:3000/api/v2/foods.json", :headers => {"Accept"=> "application/json"}, :parameters => {:ingredient => params[:ingredient], :spice => params[:spice], :measurement=> params[:measurement],}).body
-   redirect_to "/foods/#{@food['id']}"
+   @food = Food.last
+   redirect_to "/foods/#{@food.id}"
  end
  def edit
    @food = Unirest.get("http://localhost:3000/api/v2/foods/#{params[:id]}.json").body
@@ -26,7 +26,9 @@ class FoodsController < ApplicationController
  end
  
  def destroy
-  @food = Unirest.delete("http://localhost:3000/api/v2/foods/#{params[:id]}.json").body
-   redirect_to "/foods"
- end
+  @food = Food.find(params[:id])
+  @food.destroy
+  redirect_to "/foods"
+  flash[:warning] = "food deleted"
+end
 end

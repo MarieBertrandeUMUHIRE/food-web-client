@@ -6,9 +6,9 @@
  </tr>
  <% @foods.each do |food_hash|%>
  <tr>
-   <td><%= food_hash["ingredient"]%></td> 
-   <td><%= food_hash["spice"]%></td>
-   <td><%= food_hash["measurement"]%></td> 
+   <td><%= food_hash.ingredient%></td> 
+   <td><%= food_hash.spice%></td>
+   <td><%= food_hash.measurement%></td> 
  </tr>
  <% end %>
 </table> 
