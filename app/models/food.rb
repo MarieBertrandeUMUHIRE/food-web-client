@@ -9,12 +9,14 @@ class Food
   end
 
   def self.find(id)
-    food_hash = Unirest.get("http://localhost:3000/api/v2/foods/#{id}.json").body
+    food_hash = Unirest.get("http://localhost:3000/api/v2/foods.json", :headers => {"Accept"=> "application/json", "X-User-Email" => "berryumuhire@yahoo.com",
+"Authorization" => "Token token=2020"}).body
     @food = Food.new(food_hash)
   end
 
   def self.all
-    food_hashes = Unirest.get("http://localhost:3000/api/v2/foods.json").body
+    food_hashes = Unirest.get("http://localhost:3000/api/v2/foods.json", :headers => {"Accept"=> "application/json", "X-User-Email" => "berryumuhire@yahoo.com",
+"Authorization" => "Token token=2020"}).body
      foods = []
       food_hashes.each do |food_hash|
      foods << Food.new(food_hash)
@@ -26,7 +28,7 @@ class Food
    @food = Unirest.delete("http://localhost:3000/api/v2/foods/#{id}.json").body
   end
 
-  def self.create
+  def create
     food_hash = Unirest.post("http://localhost:3000/api/v2/foods.json", :headers => {"Accept"=> "application/json"}, :parameters => {:ingredient => params[:ingredient], :spice => params[:spice], :measurement=> params[:measurement],}).body
     @food = Food.new(food_hash)
     @food.save
