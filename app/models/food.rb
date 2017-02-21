@@ -9,29 +9,37 @@ class Food
   end
 
   def self.find(id)
-    food_hash = Unirest.get("http://localhost:3000/api/v2/foods.json", :headers => {"Accept"=> "application/json", "X-User-Email" => "berryumuhire@yahoo.com",
-"Authorization" => "Token token=2020"}).body
+    food_hash = Unirest.get("#{ENV['DOMAIN']}/foods/#{id}.json", :headers => {"Accept"=> "application/json", "Authorization"=> "Token token=#{ENV['API_KEY']}", "X-User-Email" => ENV['API_EMAIL']}).body
     @food = Food.new(food_hash)
   end
 
   def self.all
-    food_hashes = Unirest.get("http://localhost:3000/api/v2/foods.json", :headers => {"Accept"=> "application/json", "X-User-Email" => "berryumuhire@yahoo.com",
-"Authorization" => "Token token=2020"}).body
-     foods = []
-      food_hashes.each do |food_hash|
-     foods << Food.new(food_hash)
+    food_hashes = Unirest.get("#{ENV['DOMAIN']}/foods.json", :headers => {"Accept"=> "application/json", "Authorization"=> "Token token=#{ENV['API_KEY']}", "X-User-Email"=> ENV['API_EMAIL']}).body
+    @foods = []
+    food_hashes.each do |food_hash|
+     @foods << Food.new(food_hash)
     end
-   return foods
+   return @foods
   end
 
   def destroy
-   @food = Unirest.delete("http://localhost:3000/api/v2/foods/#{id}.json").body
+   @food = Unirest.delete("#{ENV['DOMAIN']}/foods/#{id}.json").body
   end
 
-  def create
-    food_hash = Unirest.post("http://localhost:3000/api/v2/foods.json", :headers => {"Accept"=> "application/json"}, :parameters => {:ingredient => params[:ingredient], :spice => params[:spice], :measurement=> params[:measurement],}).body
-    @food = Food.new(food_hash)
-    @food.save
-   
+  def self.create(params)
+   food_hash = Unirest.post("#{ENV['DOMAIN']}/foods.json", :headers => {"Accept"=> "application/json", "Authorization"=> "Token token=#{ENV['API_KEY']}", "X-User-Email"=> ENV['API_EMAIL']}, :parameters => params).body
+   @food = Food.new(food_hash)   
+
   end
+  def edit(id)
+
+   food_hash = Unirest.get("#{ENV['DOMAIN']}/foods/#{id}.json", :headers => {"Accept"=> "application/json", "Authorization"=> "Token token=#{ENV['API_KEY']}", "X-User-Email"=> ENV['API_EMAIL']}).body
+   
+   @food = Food.new(food_hash)
+  end
+
+ def update(params)
+   food_hash = Unirest.patch("#{ENV['DOMAIN']}/foods/#{id}.json", :headers => {"Accept"=> "application/json", "Authorization"=> "Token token=#{ENV['API_KEY']}", "X-User-Email"=> ENV['API_EMAIL']}, :parameters => params).body
+    @food = Food.new(food_hash)   
+ end
 end
